@@ -3,12 +3,15 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 //NOTE Import Schemas
-var Comment = require('../model/Comments')
-var User = require('./../model/Users')
-var Product = require('./../model/Products')
 
 var App = express();
-var router = express.Router();
+//var router = express.Router();
+require('../model/User');
+require('../model/Products');
+require('../model/Comments');
+
+//require('./config/passport');
+App.use(require('./routes'));
 
 console.log('Node Environment :', process.env.NODE_ENV);
 var isProduction = process.env.NODE_ENV === 'production';
@@ -28,6 +31,6 @@ if (isProduction) {
 }
 
 //Use our router configuration when we call /api
-App.use('/api', router);
+// App.use('/api', router);
 
 module.exports = { App };

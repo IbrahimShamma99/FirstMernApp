@@ -4,13 +4,13 @@ var mongoose = require('mongoose');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
-var UsersSchema = new Schema({
+var UserSchema = new Schema({
     username: {
         type: String,
         lowercase: true,
         unique: true,
         required: [true, "can't be blank"],
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+        //match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
         index: true
     },
 
@@ -19,7 +19,7 @@ var UsersSchema = new Schema({
         lowercase: true,
         unique: true,
         required: [true, "can't be blank"],
-        match: [/\S+@\S+\.\S+/, 'is invalid'],
+        //match: [/\S+@\S+\.\S+/, 'is invalid'],
         index: true
     },
     image: String,
@@ -28,12 +28,12 @@ var UsersSchema = new Schema({
     salt: String
 }, { timestamps: true });
 
-UsersSchema.methods.setPassword = function(password) {
+UserSchema.methods.setPassword = function(password) {
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
 
-UsersSchema.methods.toAuthJSON = function() {
+UserSchema.methods.toAuthJSON = function() {
     return {
         username: this.username,
         email: this.email,
@@ -43,6 +43,6 @@ UsersSchema.methods.toAuthJSON = function() {
     };
 };
 
-UsersSchema.methods.generateJWT = function() {};
+UserSchema.methods.generateJWT = function() {};
 
-module.exports = mongoose.model('User', UsersSchema);
+mongoose.model('User', UserSchema);
