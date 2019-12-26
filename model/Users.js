@@ -1,6 +1,7 @@
 'use strict';
 //import dependency
 var mongoose = require('mongoose');
+var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
 var UsersSchema = new Schema({
@@ -27,7 +28,21 @@ var UsersSchema = new Schema({
     salt: String
 }, { timestamps: true });
 
+UsersSchema.methods.setPassword = function(password) {
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+};
 
+UsersSchema.methods.toAuthJSON = function() {
+    return {
+        username: this.username,
+        email: this.email,
+        // TODO :token: this.generateJWT(),
+        bio: this.bio,
+        image: this.image
+    };
+};
 
+UsersSchema.methods.generateJWT = function() {};
 
 module.exports = mongoose.model('User', UsersSchema);
