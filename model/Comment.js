@@ -2,6 +2,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/**
+ * @author => comment's author
+ * @text => body of the comment
+ * @Product => Product user comments on
+ */
 var CommentSchema = new Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     text: String,
@@ -10,5 +15,4 @@ var CommentSchema = new Schema({
     timestamps: true
 });
 
-//export our module to use in server.js
 mongoose.model('Comment', CommentSchema);

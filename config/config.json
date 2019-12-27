@@ -1,3 +1,4 @@
 {
-    "LocalEnvDB": "mongodb://localhost/ProductManager"
+    "LocalEnvDB": "mongodb://localhost/ProductManager",
+    "secret": "remember?"
 }

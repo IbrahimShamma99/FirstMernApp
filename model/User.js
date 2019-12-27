@@ -5,6 +5,13 @@ var crypto = require('crypto');
 var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');
 var jwt = require('jsonwebtoken');
+var secret = require("../config/config").secret;
+/**
+ * @username =>user's username 
+ * @FavoriteProducts => user's favorite products
+ * @hash , @salt => related to the password
+ */
+
 var UserSchema = new Schema({
     username: {
         type: String,
@@ -55,7 +62,7 @@ UserSchema.methods.generateJWT = function() {
         id: this._id,
         username: this.username,
         exp: parseInt(exp.getTime() / 1000),
-    }, "remember?");
+    }, secret);
 };
 
 
