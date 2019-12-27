@@ -16,6 +16,7 @@ require('../model/Comment');
 var App = express();
 
 App.use(cors());
+require('../config/passport');
 
 // Normal express config defaults
 App.use(require('morgan')('dev'));
@@ -31,17 +32,6 @@ App.use(session({
     resave: false,
     saveUninitialized: false
 }));
-
-if (!isProduction) {
-    App.use(errorhandler());
-}
-
-if (isProduction) {
-    mongoose.connect(process.env.MONGODB_URI);
-} else {
-    mongoose.connect('mongodb://localhost/conduit');
-    mongoose.set('debug', true);
-}
 //NOTE Import Database
 
 App.use(require('./routes'));

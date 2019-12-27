@@ -6,12 +6,12 @@ var Schema = mongoose.Schema;
 var uniqueValidator = require('mongoose-unique-validator');
 var jwt = require('jsonwebtoken');
 var secret = require("../config/config").secret;
+
 /**
  * @username =>user's username 
  * @FavoriteProducts => user's favorite products
  * @hash , @salt => related to the password
  */
-
 var UserSchema = new Schema({
     username: {
         type: String,
@@ -41,6 +41,13 @@ UserSchema.methods.setPassword = function(password) {
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
+
+UserSchema.methods.validPassword = function(password) {
+    var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+    console.log(hash);
+    return this.hash === hash;
+};
+
 
 UserSchema.methods.toAuthJSON = function() {
     return {
