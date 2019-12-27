@@ -1,7 +1,6 @@
-
 //CommentForm.js
 import React, { Component } from 'react';
-import style from './../../content/css/style';
+import style from '../../content/css/style';
 class CommentForm extends Component {
     constructor(props) {
         super(props);
@@ -32,25 +31,27 @@ class CommentForm extends Component {
     }
 
     render() {
-        return (
-            <form style={style.commentForm} onSubmit={this.handleSubmit}>
-                <input
-                    type='text'
-                    placeholder='Your name…'
-                    style={style.commentFormAuthor}
-                    value={this.state.author}
-                    onChange={this.handleAuthorChange} />
-                <input
-                    type='text'
-                    placeholder='Say something…'
-                    style={style.commentFormText}
-                    value={this.state.text}
-                    onChange={this.handleTextChange} />
-                <input
-                    type='submit'
-                    style={style.commentFormPost}
-                    value='Post' />
-            </form>
+        return ( <
+            form style = { style.commentForm }
+            onSubmit = { this.handleSubmit } >
+            <
+            input type = 'text'
+            placeholder = 'Your name…'
+            style = { style.commentFormAuthor }
+            value = { this.state.author }
+            onChange = { this.handleAuthorChange }
+            /> <
+            input type = 'text'
+            placeholder = 'Say something…'
+            style = { style.commentFormText }
+            value = { this.state.text }
+            onChange = { this.handleTextChange }
+            /> <
+            input type = 'submit'
+            style = { style.commentFormPost }
+            value = 'Post' / >
+            <
+            /form>
         )
     }
 }
