@@ -23,7 +23,7 @@ class CommentBox extends Component {
             })
             .catch(
                 (e) => { console.log(e); }
-            )
+            );
     };
     handleCommentSubmit(comment) {
         axios.post(this.props.url, comment)

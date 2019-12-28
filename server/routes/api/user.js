@@ -4,8 +4,9 @@ var User = mongoose.model('User');
 //TODO  var helper = require('../middlewares/Helper');
 var { Routes } = require('../../../constants/constants');
 var passport = require("passport");
-//SECTION SignUP
-router.post(Routes.signup, (req, res, next) => {
+
+//SECTION Signup
+router.post(Routes.signup, async(req, res, next) => {
     var user = new User();
     var RegisterationInfo = req.body.user;
     try {
@@ -14,18 +15,22 @@ router.post(Routes.signup, (req, res, next) => {
         user.setPassword(RegisterationInfo.password);
 
     } catch (e) {
-        console.log(e);
-        res.send(e);
+
     };
-    user.save().then(function() {
-        user = user.toAuthJSON();
-        return res.json({
-            email: user.email,
-            username: user.username,
-            token: user.token
-        }).status(200);
-    }).catch(next);
-});
+    user.save(function(err) {
+        if (err) {
+            if (err.name === 'MongoError' && err.code === 11000) {
+                // Duplicate username
+                return res.status(422).send({ succes: false, message: 'User already exist!' });
+            }
+            // Some other error
+            return res.status(422).send(err);
+        }
+        res.json({
+            success: true
+        });
+    });
+})
 
 //SECTION login 
 router.post(Routes.login, function(req, res, next) {
@@ -39,7 +44,6 @@ router.post(Routes.login, function(req, res, next) {
     passport.authenticate('local', { session: false },
         function(err, user, info) {
             if (err) { return next(err); };
-            console.log("USER=", user);
             if (user) {
                 user.token = user.generateJWT();
                 user = user.toAuthJSON();
@@ -53,5 +57,27 @@ router.post(Routes.login, function(req, res, next) {
             }
         })(req, res, next);
 });
+
+//SECTION edit User
+router.put(Routes.user, (req, res, next) => {
+    const UserInfo = req.body.user;
+    const user = User.findById(UserInfo.id).then(function(user) {
+        if (!user) { return res.sendStatus(401); }
+    });
+
+    if (typeof UserInfo.username !== 'undefined') {
+        user.username = UserInfo.username;
+    };
+    if (typeof UserInfo.email !== 'undefined') {
+        user.email = UserInfo.email;
+    };
+    user.save().then(function() {
+        return res.json({
+            username: user.username,
+            email: user.email
+        });
+    }).catch(next);
+});
+
 
 module.exports = router;
