@@ -13,6 +13,7 @@ router.post(Routes.signup, async(req, res, next) => {
         user.username = RegisterationInfo.username;
         user.email = RegisterationInfo.email;
         user.setPassword(RegisterationInfo.password);
+        user.token = user.generateJWT();
 
     } catch (e) {
 
@@ -20,14 +21,14 @@ router.post(Routes.signup, async(req, res, next) => {
     user.save(function(err) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
-                // Duplicate username
                 return res.status(422).send({ succes: false, message: 'User already exist!' });
             }
-            // Some other error
             return res.status(422).send(err);
         }
         res.json({
-            success: true
+            username: user.username,
+            email: user.email,
+            token: user.token
         });
     });
 })
@@ -40,7 +41,7 @@ router.post(Routes.login, function(req, res, next) {
     };
     if (!LoginInfo.password) {
         return res.status(422).json({ errors: { password: "can't be blank" } });
-    }
+    };
     passport.authenticate('local', { session: false },
         function(err, user, info) {
             if (err) { return next(err); };
@@ -74,7 +75,8 @@ router.put(Routes.user, (req, res, next) => {
     user.save().then(function() {
         return res.json({
             username: user.username,
-            email: user.email
+            email: user.email,
+            token: user.token
         });
     }).catch(next);
 });
