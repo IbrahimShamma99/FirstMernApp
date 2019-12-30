@@ -32,4 +32,16 @@ router.post(Routes.addProduct, helper.required,
             });
         }).catch(next);
     });
+router.delete(Routes.product, helper.required,
+    function(req, res, next) {
+        User.findById(req.payload.id).then(function(user) {
+            if (req.product.ProductOwner._id.toString() === req.payload.id.toString()) {
+                return req.product.remove().then(function() {
+                    return res.sendStatus(204);
+                });
+            } else {
+                return res.sendStatus(403);
+            };
+        }).catch(next);
+    });
 module.exports = router;
