@@ -5,8 +5,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Product = mongoose.model('Product');
 
-//TODO params + populate
-
+//NOTE : We are making a product param to search in products DB by id
 router.param(params.product,
     function(req, res, next, ProductId) {
         Product.findOne({ ProductId: ProductId })
@@ -15,7 +14,7 @@ router.param(params.product,
                 //NOTE in case product not found
                 if (!product) {
                     return res.sendStatus(404);
-                }
+                };
                 req.product = product;
                 return next(); //MiddleWare
             })
@@ -23,6 +22,14 @@ router.param(params.product,
     });
 
 //SECTION add article
-router.post(Routes.addProduct, helper.required, function(req, res, next) {});
-
-module.exports = router
+router.post(Routes.addProduct, helper.required,
+    function(req, res, next) {
+        User.findById(req.payload.id).then((user) => {
+            const productInfo = req.body.product;
+            product = new Product(productInfo);
+            return product.save().then(function() {
+                return res.json({ product: product.toJSONFor(user) });
+            });
+        }).catch(next);
+    });
+module.exports = router;

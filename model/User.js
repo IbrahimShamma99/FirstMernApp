@@ -70,6 +70,13 @@ UserSchema.methods.generateJWT = function() {
         exp: parseInt(exp.getTime() / 1000),
     }, secret);
 };
+UserSchema.methods.toProfileJSONFor = function() {
+    return {
+        username: this.username,
+        image: this.image ||
+            'https://static.productionready.io/images/smiley-cyrus.jpg'
+    };
+};
 
 
 mongoose.model('User', UserSchema);

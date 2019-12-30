@@ -24,7 +24,23 @@ var ProductsSchema = new Schema({
     timestamps: true
 });
 ProductsSchema.methods.generateProductId = function() {
-    this.ProductId = '_' + Math.random().toString(36).substr(2, 9);
+    this.ProductId = Math.random().toString(36).substr(2, 9);
     return this;
 };
+
+ProductsSchema.methods.toJSONFor = function(user) {
+    return {
+        ProductOwner: user.toProfileJSONFor(),
+        ProductDiscription: this.ProductDiscription,
+        ProductName: this.ProductName,
+        price: this.price,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt,
+        category: this.category,
+        //TODO: favorited: user ? user.isFavorite(this._id) : false,
+        //favoritesCount: this.favoritesCount,
+        NumberOfAvailableQuantities: this.NumberOfAvailableQuantities,
+    };
+};
+
 mongoose.model('Product', ProductsSchema);
