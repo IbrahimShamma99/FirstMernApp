@@ -14,6 +14,7 @@ var ProductsSchema = new Schema({
     ProductName: String,
     ProductDiscription: String,
     ProductImages: { type: String },
+    ProductId: { required: true, type: String },
     price: { type: String },
     category: String,
     onSale: Boolean,
@@ -22,5 +23,8 @@ var ProductsSchema = new Schema({
 }, {
     timestamps: true
 });
-
+ProductsSchema.methods.generateProductId = function() {
+    this.ProductId = '_' + Math.random().toString(36).substr(2, 9);
+    return this;
+};
 mongoose.model('Product', ProductsSchema);

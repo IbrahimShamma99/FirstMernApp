@@ -5,4 +5,8 @@ const Routes = {
     user: '/users/user'
 };
 
-module.exports = { Routes };
+const params = {
+    product: "product",
+    ProductOwner: 'ProductOwner'
+};
+module.exports = { Routes, params };
