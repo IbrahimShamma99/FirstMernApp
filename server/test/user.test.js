@@ -22,24 +22,18 @@ test(TestNames.Regiseration_Case2, function() {
     }).expect(201);
 });
 
-// //SECTION login
-// test(TestConstants.TestNames.loginTest, function() {
+//SECTION login
+test(TestNames.Login_Case1, function() {
 
-//     request(app).post(Constants.Routes.login).send({
-//         user: {
-//             email: "ininseeainin1" + randomizer.toString() + "@gmail.com",
-//             password: "macgeetheking"
-//         }
-//     }).expect(201);
-// });
+    request(App).post(TestRoutes.login).send({
+        ValidUser
+    }).expect(201);
+});
 
-// //SECTION login with mistaken password or 
-// test(TestConstants.TestNames.loginWithMistakenEmailTest, function() {
+//SECTION login with mistaken password or 
+test(TestNames.Login_Case2, function() {
 
-//     request(app).post(Constants.Routes.login).send({
-//         user: {
-//             email: "ininseeainin2" + randomizer.toString() + "@gmail.com",
-//             password: "macgeetheking"
-//         }
-//     }).expect(422);
-// });
+    request(App).post(TestRoutes.login).send({
+        NotValidUser
+    }).expect(422);
+});

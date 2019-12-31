@@ -29,7 +29,8 @@ const NotValidUser = {
 };
 
 const TestRoutes = {
-    signup: "/api/users"
+    signup: "/api/users",
+    login: "/api/users/login"
 };
 
 module.exports = { TestNames, ValidUser, NotValidUser, TestRoutes };
