@@ -32,7 +32,14 @@ var UserSchema = new Schema({
     image: String,
     FavoriteProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
     hash: String,
-    salt: String
+    salt: String,
+    age: Number,
+    contacts: {
+        PhoneNumber: { required: false },
+        FacebookAccount: { required: false },
+        InstegramAccount: { required: false },
+        LinkedInAccount: { required: false },
+    }
 }, { timestamps: true });
 
 // UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });

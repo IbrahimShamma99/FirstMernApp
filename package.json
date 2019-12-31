@@ -31,14 +31,16 @@
         "react-scripts": "1.1.1",
         "request": "^2.88.0",
         "slug": "0.9.1",
+        "supertest": "^4.0.2",
         "underscore": "1.8.3"
     },
     "scripts": {
         "start": "react-scripts start",
         "start-dev": "nf start -p 3000",
         "build": "react-scripts build",
-        "test": "react-scripts test --env=jsdom",
+        "test-react": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
-        "dev": "nodemon ./server/app.js"
+        "dev": "nodemon ./server/app.js",
+        "test": "jest --watch"
     }
 }
