@@ -35,7 +35,7 @@ if (isProduction) {
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useCreateIndex: true,
-        })
+        });
 } else {
     mongoose
         .connect(config.LocalEnvDB, {
@@ -45,14 +45,14 @@ if (isProduction) {
         });
     mongoose.set('debug', true);
 };
-// App.use(function(err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.json({
-//         'errors': {
-//             message: err.message,
-//             error: {}
-//         }
-//     });
-// });
+App.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.json({
+        'errors': {
+            message: err.message,
+            error: {}
+        }
+    });
+});
 
 module.exports = App;
