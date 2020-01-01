@@ -51,4 +51,13 @@ const TestRoutes = {
     login: "/api/users/login"
 };
 
+const LoginValidUser = {
+    user: {
+        email: "mrJawsPoly@gmail.com",
+        password: "Password$1234",
+        age: 21
+    }
+
+};
+
 module.exports = { TestNames, ValidUser, NotValidUser, TestRoutes };

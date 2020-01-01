@@ -4,6 +4,7 @@ const App = require("../server");
 //const { Routes } = require("../../constants/constants");
 var {
     TestRoutes,
+    LoginValidUser,
     TestNames,
     ValidUser,
     NotValidUser,
@@ -12,47 +13,79 @@ var {
 var expect = require('chai').expect;
 const randomizer = Math.random();
 
-//SECTION Fine Registeration
-// describe('user thing', () => {
-//     it("test1", () => {
-//         before(function(done) {
-//             request(App)
-//                 .post(TestRoutes.signup)
-//                 .send(NotValidUser)
-//                 .end(function(err, response) {
-//                     expect(response.statusCode).to.equal(200);
-//                     done();
-//                 });
-//         });
-//     });
-// });
-// //SECTION Bad Registeration
-// test(TestNames.Regiseration_Case2, function() {
-//     request(App).post(TestRoutes.signup).send({
-//         ValidUser
-//     }).expect(422);
-// });
 
-// //SECTION login
-// test(TestNames.Login_Case1, function() {
+//NOTE specs with no expectations within just pass.
 
-//     request(App).post(TestRoutes.login).send({
-//         ValidUser
-//     }).expect(201);
-// });
+describe('Registeration Tests', () => {
 
-// //SECTION login with not valid user 
-// test(TestNames.Login_Case2, function() {
-//     request(App).post(TestRoutes.login).send({
-//         NotValidUser
-//     }).expect(422);
-// });
+    //SECTION Fine Registeration
+    it(TestNames.Regiseration_Case1, (done) => {
+        request(App)
+            .post(TestRoutes.signup)
+            .send(ValidUser)
+            .end(function(err, response) {
+                if (err) {
+                    return err;
+                }
+                expect(response.statusCode).to.equal(200);
+                done();
+            });
+    });
 
-// //SECTION login with mistaken credentials 
-// test(TestNames.Login_Case3, function() {
-//     request(App).post(TestRoutes.login)
-//         .expect(422)
-//         .send({
-//             MistakenlyWrittenValidUser
-//         });
-// });
+    //SECTION Bad Registeration
+    it(TestNames.Regiseration_Case2, function(done) {
+        request(App)
+            .post(TestRoutes.signup).send({ NotValidUser })
+            .end(function(err, response) {
+                if (err) {
+                    return err;
+                }
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+    });
+});
+
+describe("Login Tests", () => {
+
+    //SECTION Fine login
+    it(TestNames.Login_Case1, function(done) {
+        request(App).post(TestRoutes.login)
+            .send({ LoginValidUser })
+            .end(function(err, response) {
+                if (err) {
+                    return err;
+                }
+                console.log(response.body);
+                expect(response.statusCode).to.equal(200);
+                done();
+            });
+    });
+    //SECTION login with not valid user 
+    it(TestNames.Login_Case2, function(done) {
+        request(App)
+            .post(TestRoutes.login)
+            .send({ NotValidUser })
+            .end(function(err, response) {
+                if (err) {
+                    return err;
+                }
+                //console.log("Response Body:", response);
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+    });
+
+    //SECTION login with mistaken credentials 
+    it(TestNames.Login_Case3, function(done) {
+        request(App).post(TestRoutes.login)
+            .send({ MistakenlyWrittenValidUser })
+            .end(function(err, response) {
+                if (err) {
+                    return err;
+                }
+                expect(response.statusCode).to.equal(422);
+                done();
+            });
+    });
+});

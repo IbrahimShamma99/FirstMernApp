@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var cors = require("cors");
 var session = require('express-session');
 var config = require("../config/config");
-
+var errorhandler = require('errorhandler');
 var App = express();
 App.use(cors());
 
@@ -17,7 +17,7 @@ require('../config/passport');
 App.use(require('morgan')('dev'));
 App.use(bodyParser.urlencoded({ extended: false }));
 App.use(bodyParser.json());
-
+App.use(errorhandler());
 
 App.use(session({
     secret: 'ProductManager',
