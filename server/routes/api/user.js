@@ -35,17 +35,20 @@ router.post(Routes.signup, async(req, res, next) => {
 
 //SECTION login 
 router.post(Routes.login, function(req, res, next) {
-    const LoginInfo = req.body.user;
+    const UserInfo = req.body.user;
     //NOTE if the email or password weren't provided
-    if (!LoginInfo.email) {
+    if (!UserInfo.email) {
         res.send(422).json({ error: { message: "please provice email " } });
     };
-    if (!LoginInfo.password) {
+    if (!UserInfo.password) {
         return res.status(422).json({ errors: { password: "can't be blank" } });
     };
     passport.authenticate('local', { session: false },
         function(err, user, info) {
-            if (err) { return next(err); };
+            if (err) {
+                return res.status(422).send({ error: { message: "authentication failed" } });
+
+            };
             if (user) {
                 user.token = user.generateJWT();
                 user = user.toAuthJSON();
