@@ -15,9 +15,10 @@ require('../model/Product');
 require('../model/Comment');
 require('../config/passport');
 App.use(require('morgan')('dev'));
+App.use(require('method-override')());
+App.use(cors());
 App.use(bodyParser.urlencoded({ extended: false }));
 App.use(bodyParser.json());
-App.use(errorhandler());
 
 App.use(session({
     secret: 'ProductManager',
@@ -45,6 +46,26 @@ if (isProduction) {
         });
     mongoose.set('debug', true);
 };
+
+if (!isProduction) {
+    App.use(function(err, req, res, next) {
+        // if (err.status === undefined) {
+        //     err.status = 422
+        // };
+        res.status(err.status || 500);
+        console.log("error status = ", err.status);
+        res.json({
+            'errors': {
+                message: err.message,
+                error: err
+            }
+        });
+    });
+};
+
+
+// production error handler
+// no stacktraces leaked to user
 App.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.json({
@@ -54,5 +75,4 @@ App.use(function(err, req, res, next) {
         }
     });
 });
-
 module.exports = App;

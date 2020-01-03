@@ -85,5 +85,4 @@ UserSchema.methods.toProfileJSONFor = function() {
     };
 };
 
-
 mongoose.model('User', UserSchema);

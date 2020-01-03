@@ -36,6 +36,7 @@ router.post(Routes.signup, async(req, res, next) => {
 //SECTION login 
 router.post(Routes.login, function(req, res, next) {
     const LoginInfo = req.body.user;
+    //NOTE if the email or password weren't provided
     if (!LoginInfo.email) {
         res.send(422).json({ error: { message: "please provice email " } });
     };
@@ -48,7 +49,7 @@ router.post(Routes.login, function(req, res, next) {
             if (user) {
                 user.token = user.generateJWT();
                 user = user.toAuthJSON();
-                return res.json({
+                return res.status(200).json({
                     username: user.username,
                     email: user.email,
                     token: user.token
@@ -73,7 +74,7 @@ router.put(Routes.user, (req, res, next) => {
         user.email = UserInfo.email;
     };
     user.save().then(function() {
-        return res.json({
+        return res.status(200).json({
             username: user.username,
             email: user.email,
             token: user.token

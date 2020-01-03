@@ -27,6 +27,7 @@ describe('Registeration Tests', () => {
                 if (err) {
                     return err;
                 }
+
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -52,11 +53,12 @@ describe("Login Tests", () => {
     it(TestNames.Login_Case1, function(done) {
         request(App).post(TestRoutes.login)
             .send({ LoginValidUser })
+            //.set("Accept", "application/json")
             .end(function(err, response) {
                 if (err) {
                     return err;
                 }
-                console.log(response.body);
+                //console.log(response.body);
                 expect(response.statusCode).to.equal(200);
                 done();
             });
@@ -66,6 +68,7 @@ describe("Login Tests", () => {
         request(App)
             .post(TestRoutes.login)
             .send({ NotValidUser })
+            .set("Accept", "application/json")
             .end(function(err, response) {
                 if (err) {
                     return err;
@@ -80,6 +83,7 @@ describe("Login Tests", () => {
     it(TestNames.Login_Case3, function(done) {
         request(App).post(TestRoutes.login)
             .send({ MistakenlyWrittenValidUser })
+            .set("Accept", "application/json")
             .end(function(err, response) {
                 if (err) {
                     return err;
