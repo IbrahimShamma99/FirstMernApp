@@ -14,7 +14,7 @@
         "express": "^4.17.1",
         "express-jwt": "3.3.0",
         "express-session": "^1.17.0",
-        "foreman": "^2.0.0",
+        "foreman": "^3.0.1",
         "jest": "^24.9.0",
         "jsonwebtoken": "7.1.9",
         "marked": "^0.8.0",
