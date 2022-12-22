@@ -16,7 +16,7 @@
         "express-session": "^1.17.0",
         "foreman": "^3.0.1",
         "jest": "^24.9.0",
-        "jsonwebtoken": "7.1.9",
+        "jsonwebtoken": "9.0.0",
         "marked": "^0.8.0",
         "method-override": "2.3.10",
         "methods": "1.1.2",
